@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from app import views
 from app.views import services, service_detail
+from django.conf.urls import handler404
+from app.views import custom_404
 
 urlpatterns = [
     path('admin/', admin.site.urls),

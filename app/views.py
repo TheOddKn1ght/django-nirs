@@ -10,3 +10,6 @@ def services(request):
 
 def service_detail(request, service_id):
     return render(request, 'service_detail.html', {'service_id': service_id})
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
