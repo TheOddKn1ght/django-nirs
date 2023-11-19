@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Services</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+</head>
+<body>
+    <header class="bg-primary text-white text-center py-1">
+        <h1>Обычная Клиника</h1>
+    </header>
+
+    <nav class="bg-dark text-white text-center py-2">
+        <a href="{% url 'index' %}" class="text-white">Домашняя страница</a> |
+        <a href="{% url 'services' %}" class="text-white">Услуги</a> |
+        <a href="#" class="text-white">Врачи</a> |
+        <a href="#" class="text-white">О нас</a> |
+        <a href="#" class="text-white">Контакты</a>
+    </nav>
+
+    <section class="container my-4">
+        {% block content %}
+
+        {% endblock %}
+    </section>
+
+    <footer class="bg-dark text-white text-center py-2 fixed-bottom">
+        <a href="https://vk.com/theoddknight" class="text-white">Author</a>
+    </footer>
+
+    <script src="{% static 'js/bootstrap.min.js'%}"></script>
+</body>
+</html>

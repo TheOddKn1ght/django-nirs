@@ -1,35 +1,63 @@
+{% extends 'layouts/base.html' %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Services</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
-</head>
-<body>
-    <header class="bg-primary text-white text-center py-1">
-        <h1>Medical Services</h1>
-    </header>
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="jumbotron">
+            <h2 class="display-4">Добро пожаловать в Обычную Клинику</h2>
+            <p class="lead">
+                Откройте для себя новый стандарт персонализированной медицинской помощи. Наш опытный коллектив готов предоставить вам исключительные медицинские услуги в комфортной и современной обстановке.
+            </p>
+            <hr class="my-4">
+            <p>
+                От регулярных проверок до специализированных процедур, ваше благополучие - наш главный приоритет.
+            </p>
+        </div>
 
-    <nav class="bg-dark text-white text-center py-2">
-        <a href="#" class="text-white">Home</a> |
-        <a href="#" class="text-white">Services</a> |
-        <a href="#" class="text-white">About Us</a> |
-        <a href="#" class="text-white">Contact</a>
-    </nav>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">Наши Услуги</h2>
+                <p class="card-text">
+                    Исследуйте наш обширный спектр медицинских услуг, предназначенных для решения ваших проблем со здоровьем и поддержания общего благополучия.
+                </p>
+            </div>
+        </div>
 
-    <section class="container my-4">
-        <h2>Welcome to our Medical Services</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.</p>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Современные Условия</h2>
+                <p class="card-text">
+                    Наша клиника оснащена современными условиями и последними медицинскими технологиями, чтобы гарантировать вам лучшую возможную заботу о здоровье.
+                </p>
+            </div>
+        </div>
+    </div>
 
-    </section>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Свяжитесь с нами</h2>
+                <p class="card-text">
+                    Обычная Клиника<br>
+                    Адрес: ул. Примерная, 123<br>
+                    Телефон: +7 (800) 555-35-35<br>
+                    Электронная почта: info@exampleclinic.ru
+                </p>
+            </div>
+        </div>
 
-    <footer class="bg-dark text-white text-center py-2 fixed-bottom">
-        &copy; 2023 Medical Services
-    </footer>
-
-    <script src="{% static 'js/bootstrap.min.js'%}"></script>
-</body>
-</html>
+        <div class="card mt-4">
+            <div class="card-body">
+                <h2 class="card-title">Часы Работы</h2>
+                <p class="card-text">
+                    Понедельник - Пятница: 9:00 - 18:00<br>
+                    Суббота: 10:00 - 15:00<br>
+                    Воскресенье: Выходной
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

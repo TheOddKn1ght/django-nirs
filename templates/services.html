@@ -1,0 +1,44 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Наши услуги</h2>
+        <p>
+            Explore our comprehensive range of medical services designed to address your health concerns and promote overall well-being.
+        </p>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'service_detail' service_id=1 %}">Cardiology</a></h5>
+                        <p class="card-text">Comprehensive heart care services to keep your cardiovascular health in check.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'service_detail' service_id=2 %}">Dermatology</a></h5>
+                        <p class="card-text">Specialized skin care services for a healthy and radiant complexion.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'service_detail' service_id=3 %}">Orthopedics</a></h5>
+                        <p class="card-text">Expert care for musculoskeletal conditions and joint health.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more columns as needed -->
+        </div>
+    </div>
+</div>
+{% endblock %}
