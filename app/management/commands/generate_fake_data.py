@@ -1,105 +1,94 @@
-from django.contrib.auth.models import User
+import os
 from django.core.management.base import BaseCommand
 from faker import Faker
-from datetime import timedelta
-from app.models import MedicalStaff, Doctor, Reception, Procedure, Price, TotalCost, PatientRecord, DoctorCatalog, ProcedureCatalog, MedicalStaffCatalog
-import random
+from app.models import MedWorker, Procedure, Appointment, ProcedureJournal, AvailableDoctors, Patient
+from django.utils import timezone
 
 fake = Faker()
 
 class Command(BaseCommand):
-    help = 'Populate the database with fake test data'
+    help = 'Generate fake data for testing purposes'
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.SUCCESS('Generating fake data...'))
+        self.stdout.write(self.style.SUCCESS('Starting data generation...'))
 
-        self.generate_fake_data()
+        num_medworkers = 10
+        num_procedures = 5
+        num_patients = 20
+        num_appointments = 30
+        num_procedure_journal_entries = 25
+        num_available_doctors = 15
+
+        self.create_fake_medworkers(num_medworkers)
+        self.create_fake_procedures(num_procedures)
+
+        doctors = MedWorker.objects.filter(position='Doctor')
+        self.create_fake_patients(num_patients, doctors)
+        patients = Patient.objects.all()
+
+        self.create_fake_appointments(num_appointments, patients, doctors)
+        self.create_fake_procedure_journal_entries(num_procedure_journal_entries, patients, doctors, Procedure.objects.all())
+        self.create_fake_available_doctors(num_available_doctors)
 
         self.stdout.write(self.style.SUCCESS('Fake data generated successfully!'))
 
-    def create_fake_user(self):
-        username = f"{fake.user_name()}_{fake.random_number(digits=3)}"  # Append a unique identifier
-        email = fake.email()
-        password = fake.password()
+    def create_fake_medworkers(self, num_records):
+        for _ in range(num_records):
+            MedWorker.objects.create(
+                full_name=fake.name(),
+                phone=fake.phone_number(),
+                department=fake.job(),
+                position=fake.random_element(elements=('Doctor', 'Nurse', 'Technician'))
+            )
 
-        user = User.objects.create_user(username=username, email=email, password=password)
-        return user
+    def create_fake_procedures(self, num_records):
+        for _ in range(num_records):
+            Procedure.objects.create(
+                name=fake.word(),
+                cost=fake.pydecimal(left_digits=3, right_digits=2, positive=True)
+            )
 
+    def create_fake_patients(self, num_records, doctors):
+        for _ in range(num_records):
+            doctor = fake.random_element(doctors)
+            Patient.objects.create(
+                full_name=fake.name(),
+                phone=fake.phone_number(),
+                email=fake.email(),
+                doctor_id=doctor,
+                anamnesis=fake.text()
+            )
 
-    def create_fake_medical_staff(self):
-        user = self.create_fake_user()
-        education = fake.word()
+    def create_fake_appointments(self, num_records, patients, doctors):
+        for _ in range(num_records):
+            patient = fake.random_element(patients)
+            doctor = fake.random_element(doctors)
+            Appointment.objects.create(
+                date_time=fake.future_datetime(),
+                email=patient.email,
+                patient_id=patient,
+                doctor_id=doctor,
+                room=fake.random_int(min=1, max=10)
+            )
 
-        return MedicalStaff.objects.create(user=user, education=education)
+    def create_fake_procedure_journal_entries(self, num_records, patients, doctors, procedures):
+        for _ in range(num_records):
+            patient = fake.random_element(patients)
+            doctor = fake.random_element(doctors)
+            procedure = fake.random_element(procedures)
+            ProcedureJournal.objects.create(
+                procedure_id=procedure,
+                patient_id=patient,
+                doctor_id=doctor,
+                date=fake.past_date(),
+                room=fake.random_int(min=1, max=10),
+                anamnesis=fake.text()
+            )
 
-    def create_fake_doctor(self):
-        medical_staff = self.create_fake_medical_staff()
-
-        return Doctor.objects.create(medical_staff=medical_staff)
-
-    def create_fake_reception(self):
-        start_time = fake.date_time_this_decade()
-        end_time = start_time + timedelta(hours=random.randint(1, 3))
-        doctor = self.create_fake_doctor()
-        user = self.create_fake_user()
-
-        return Reception.objects.create(start_time=start_time, end_time=end_time, doctor=doctor, user=user)
-
-    def create_fake_procedure(self):
-        start_time = fake.date_time_this_decade()
-        end_time = start_time + timedelta(minutes=random.randint(30, 120))
-        room_number = random.randint(1, 10)
-        invoice_number = random.randint(1000, 9999) if random.choice([True, False]) else None
-        medical_staff = self.create_fake_medical_staff()
-        user = self.create_fake_user()
-        is_paid = random.choice([True, False])
-
-        return Procedure.objects.create(start_time=start_time, end_time=end_time, room_number=room_number,
-                                        invoice_number=invoice_number, medical_staff=medical_staff, user=user, is_paid=is_paid)
-
-    def create_fake_price(self):
-        amount = round(random.uniform(50, 500), 2)
-        procedure = self.create_fake_procedure()
-
-        return Price.objects.create(amount=amount, procedure=procedure)
-
-    def create_fake_total_cost(self):
-        amount = round(random.uniform(100, 1000), 2)
-        user = self.create_fake_user()
-
-        return TotalCost.objects.create(amount=amount, user=user)
-
-    def create_fake_patient_record(self):
-        user = self.create_fake_user()
-        description = fake.text()
-
-        return PatientRecord.objects.create(user=user, description=description)
-
-    def create_fake_doctor_catalog(self):
-        doctor = self.create_fake_doctor()
-
-        return DoctorCatalog.objects.create(doctor=doctor)
-
-    def create_fake_procedure_catalog(self):
-        procedure = self.create_fake_procedure()
-
-        return ProcedureCatalog.objects.create(procedure=procedure)
-
-    def create_fake_medical_staff_catalog(self):
-        medical_staff = self.create_fake_medical_staff()
-
-        return MedicalStaffCatalog.objects.create(medical_staff=medical_staff)
-
-    def generate_fake_data(self, num_entries=10):
-        for _ in range(num_entries):
-            self.create_fake_reception()
-            self.create_fake_price()
-            self.create_fake_total_cost()
-            self.create_fake_patient_record()
-            self.create_fake_doctor_catalog()
-            self.create_fake_procedure_catalog()
-            self.create_fake_medical_staff_catalog()
-
-if __name__ == "__main__":
-    command = Command()
-    command.handle()
+    def create_fake_available_doctors(self, num_records):
+        for _ in range(num_records):
+            AvailableDoctors.objects.create(
+                full_name=fake.name(),
+                department=fake.random_element(elements=('Cardiology', 'Orthopedics', 'Dermatology')),
+                available_time=fake.random_element(elements=('Morning', 'Afternoon', 'Evening'))
+            )
