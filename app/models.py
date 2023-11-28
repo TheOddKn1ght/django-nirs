@@ -1,45 +1,45 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-class MedicalStaff(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    education = models.CharField(max_length=255)
-
-class Doctor(models.Model):
-    medical_staff = models.OneToOneField(MedicalStaff, on_delete=models.CASCADE)
-
-class Reception(models.Model):
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class MedWorker(models.Model):
+    id = models.AutoField(primary_key=True)
+    full_name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=20)
+    department = models.CharField(max_length=255)
+    position = models.CharField(max_length=255)
 
 class Procedure(models.Model):
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-    room_number = models.IntegerField()
-    invoice_number = models.IntegerField(null=True, blank=True)
-    medical_staff = models.ForeignKey(MedicalStaff, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    is_paid = models.BooleanField(default=False)
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    cost = models.DecimalField(max_digits=10, decimal_places=2)
 
-class Price(models.Model):
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    procedure = models.OneToOneField(Procedure, on_delete=models.CASCADE)
+class Appointment(models.Model):
+    id = models.AutoField(primary_key=True)
+    date_time = models.DateTimeField()
+    email = models.EmailField()
+    patient_id = models.ForeignKey('Patient', on_delete=models.CASCADE)
+    doctor_id = models.ForeignKey('MedWorker', on_delete=models.CASCADE)
+    room = models.CharField(max_length=255)
 
-class TotalCost(models.Model):
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class ProcedureJournal(models.Model):
+    id = models.AutoField(primary_key=True)
+    procedure_id = models.ForeignKey('Procedure', on_delete=models.CASCADE)
+    patient_id = models.ForeignKey('Patient', on_delete=models.CASCADE)
+    doctor_id = models.ForeignKey('MedWorker', on_delete=models.CASCADE)
+    date = models.DateField()
+    room = models.CharField(max_length=255)
+    anamnesis = models.TextField()
 
-class PatientRecord(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    description = models.TextField()
+class AvailableDoctors(models.Model):
+    id = models.AutoField(primary_key=True)
+    full_name = models.CharField(max_length=255)
+    department = models.CharField(max_length=255)
+    available_time = models.CharField(max_length=255)
 
-class DoctorCatalog(models.Model):
-    doctor = models.OneToOneField(Doctor, on_delete=models.CASCADE)
-
-class ProcedureCatalog(models.Model):
-    procedure = models.OneToOneField(Procedure, on_delete=models.CASCADE)
-
-class MedicalStaffCatalog(models.Model):
-    medical_staff = models.OneToOneField(MedicalStaff, on_delete=models.CASCADE)
+class Patient(models.Model):
+    id = models.AutoField(primary_key=True)
+    full_name = models.CharField(max_length=255)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField()
+    doctor_id = models.ForeignKey('MedWorker', on_delete=models.CASCADE)
+    anamnesis = models.TextField()
