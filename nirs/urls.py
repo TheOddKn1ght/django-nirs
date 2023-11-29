@@ -20,10 +20,13 @@ from app import views
 from app.views import services, service_detail
 from django.conf.urls import handler404
 from app.views import custom_404
+from app.views import doctors
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('', views.index, name='index' ),
     path('services', views.services, name='services'),
-    path('services/<int:service_id>/', service_detail, name='service_detail')
+    path('services/<int:service_id>/', service_detail, name='service_detail'),
+    path('doctors', views.doctors, name='doctors'),
+    path('doctors/<int:doctor_id>/', views.doctor_detail, name='doctor_detail')
 ]
