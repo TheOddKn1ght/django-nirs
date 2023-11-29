@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medical Services</title>
+    <title>Обычная клиника</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
 </head>
 <body>
@@ -17,8 +17,8 @@
         <a href="{% url 'index' %}" class="text-white">Домашняя страница</a> |
         <a href="{% url 'services' %}" class="text-white">Услуги</a> |
         <a href="{% url 'doctors' %}" class="text-white">Врачи</a> |
-        <a href="#" class="text-white">О нас</a> |
-        <a href="#" class="text-white">Контакты</a> | 
+        <a href="{% url 'about' %}" class="text-white">О нас</a> |
+        <a href="#" class="text-white">Контакты</a>
     </nav>
 
     <section class="container my-4">
@@ -28,7 +28,7 @@
     </section>
 
     <footer class="bg-dark text-white text-center py-1 fixed-bottom">
-        <a href="https://vk.com/theoddknight" class="text-white">Author</a>
+        <a href="https://vk.com/theoddknight" class="text-secondary">Автор</a>
     </footer>
 
     <script src="{% static 'js/bootstrap.min.js'%}"></script>
