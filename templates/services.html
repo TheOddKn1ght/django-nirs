@@ -11,33 +11,16 @@
         </p>
 
         <div class="row">
+            {% for procedure in procedures %}
             <div class="col-md-4">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title"><a href="{% url 'service_detail' service_id=1 %}">Cardiology</a></h5>
-                        <p class="card-text">Comprehensive heart care services to keep your cardiovascular health in check.</p>
+                        <h5 class="card-title"><a href="{% url 'service_detail' service_id=procedure.id %}">{{ procedure.name }}</a></h5>
+                        <p class="card-text">{{ procedure.description }}</p>
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="{% url 'service_detail' service_id=2 %}">Dermatology</a></h5>
-                        <p class="card-text">Specialized skin care services for a healthy and radiant complexion.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="{% url 'service_detail' service_id=3 %}">Orthopedics</a></h5>
-                        <p class="card-text">Expert care for musculoskeletal conditions and joint health.</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Add more columns as needed -->
+            {% endfor %}
         </div>
     </div>
 </div>

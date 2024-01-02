@@ -1,0 +1,38 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2>Свяжитесь с нами</h2>
+        <p>Не стесняйтесь связаться с нами по любым вопросам или отзывам.</p>
+
+        <h4>Наши контактные данные:</h4>
+        <p>
+            <strong>Email:</strong> info@example.com<br>
+            <strong>Телефон:</strong> +1 (123) 456-7890<br>
+            <strong>Адрес:</strong> 123 Главная улица, Город
+        </p>
+
+        <h4>Форма обратной связи:</h4>
+        <form method="post" action="{% url 'contacts' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_name">Ваше имя:</label>
+                <input type="text" name="name" id="id_name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="id_email">Email:</label>
+                <input type="email" name="email" id="id_email" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="id_message">Ваше сообщение:</label>
+                <textarea name="message" id="id_message" class="form-control" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-top: 15px;">Отправить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

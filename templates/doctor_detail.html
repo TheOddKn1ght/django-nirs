@@ -3,19 +3,23 @@
 {% load static %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-4">
-            <img src="{% static 'images/house.jpg' %}" alt="Doctor Photo" class="img-fluid rounded">
-        </div>
-        <div class="col-md-8">
-            <h2> {{ doctor.full_name }} </h2>
-            <p><strong>Department:</strong> {{ doctor.department }} </p>
-            <p><strong>Education:</strong> "MD, University Medical School" </p>
-            <p><strong>Description:</strong> "Experienced cardiologist with a focus on heart health."</p>
-            <p><strong>Schedule:</strong> "Monday to Friday, 9:00 AM - 5:00 PM" </p>
-        </div>
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2>{{ doctor.get_full_name }}</h2>
+
+        {% if doctor.photo %}
+            <img src="{{ doctor.photo.url }}" class="img-fluid mb-3" alt="{{ doctor.get_full_name }}">
+        {% else %}
+            <img src="{% static 'images/default_doctor_photo.jpg' %}" class="img-fluid mb-3" alt="{{ doctor.get_full_name }}">
+        {% endif %}
+
+        <p><strong>Отделение:</strong> {{ doctor.department }}</p>
+        <p><strong>Время приема:</strong> {{ doctor.time }}</p>
+        <h4>Контактная информация:</h4>
+        <p>
+            <strong>Email:</strong> {{ doctor.email }}<br>
+            <strong>Телефон:</strong> {{ doctor.phone }}
+        </p>
     </div>
+</div>
 {% endblock %}
-
-
-

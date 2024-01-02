@@ -1,18 +1,32 @@
 {% extends 'layouts/base.html' %}
 
+{% load static %}
+
 {% block content %}
-    <h2>Врачи</h2>
-    <div class="row">
-        {% for doctor in doctors %}
-            <div class="col-md-4 mb-4">
-                <div class="card">
+<div class="row">
+    <div class="col-md-12">
+        <h2>Наши врачи</h2>
+
+        <div class="row">
+            {% for doctor in doctors %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    {% if doctor.photo %}
+                        <img src="{{ doctor.photo.url }}" class="card-img-top" alt="{{ doctor.get_full_name }}">
+                    {% else %}
+                        <img src="{% static 'img/default_doctor_photo.jpg' %}" class="card-img-top" alt="{{ doctor.get_full_name }}">
+                    {% endif %}
                     <div class="card-body">
-                        <h5 class="card-title">{{ doctor.full_name }}</h5>
+                        <h5 class="card-title">
+                            <a href="{% url 'doctor_detail' doctor_id=doctor.id %}">{{ doctor.get_full_name }}</a>
+                        </h5>
                         <p class="card-text">{{ doctor.department }}</p>
-                        <a href="{% url 'doctor_detail' doctor.id %}" class="btn btn-info">Подробнее</a>
+                        <p class="card-text">{{ doctor.time }}</p>
                     </div>
                 </div>
             </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
+</div>
 {% endblock %}
