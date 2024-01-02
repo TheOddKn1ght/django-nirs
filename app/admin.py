@@ -1,28 +1,27 @@
 from django.contrib import admin
-from .models import MedWorker, Procedure, Appointment, ProcedureJournal, AvailableDoctors, Patient
+from .models import Doctor, Appointment, Procedure, Patient, ProcedureLog, MedicalStaff
 
 # Register your models here.
-
-@admin.register(MedWorker)
-class MedWorkerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'full_name', 'phone', 'department', 'position')
-
-@admin.register(Procedure)
-class ProcedureAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'cost')
+@admin.register(Doctor)
+class DoctorAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fio', 'department', 'time')
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
     list_display = ('id', 'date_time', 'email', 'patient_id', 'doctor_id', 'room')
 
-@admin.register(ProcedureJournal)
-class ProcedureJournalAdmin(admin.ModelAdmin):
-    list_display = ('id', 'procedure_id', 'patient_id', 'doctor_id', 'date', 'room', 'anamnesis')
-
-@admin.register(AvailableDoctors)
-class AvailableDoctorsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'full_name', 'department', 'available_time')
+@admin.register(Procedure)
+class ProcedureAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'cost')
 
 @admin.register(Patient)
 class PatientAdmin(admin.ModelAdmin):
-    list_display = ('id', 'full_name', 'phone', 'email', 'doctor_id', 'anamnesis')
+    list_display = ('id', 'fio', 'phone', 'email', 'doctor_id', 'medical_history')
+
+@admin.register(ProcedureLog)
+class ProcedureLogAdmin(admin.ModelAdmin):
+    list_display = ('id', 'patient_id', 'doctor_id', 'date', 'room', 'medical_history')
+
+@admin.register(MedicalStaff)
+class MedicalStaffAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fio', 'phone', 'department', 'position')
