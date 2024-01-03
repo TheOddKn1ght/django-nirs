@@ -31,3 +31,16 @@ def about(request):
 
 def contacts(request):
     return render(request, "contact.html")
+
+def book_appointment(request):
+    if request.method == 'POST':
+        # Process the form submission here
+        # You can access the client's credentials using request.POST['name'], request.POST['email'], etc.
+        # Implement your logic for booking the appointment
+
+        # Redirect or render a success page
+        return render(request, 'index.html')
+
+    # If the request method is not POST, you may want to handle it differently
+    # For example, redirect to the service detail page or show an error message
+    return render(request, 'index.html')

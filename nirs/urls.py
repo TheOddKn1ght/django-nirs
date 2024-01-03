@@ -21,12 +21,14 @@ from app.views import services, service_detail
 from django.conf.urls import handler404
 from app.views import custom_404
 from app.views import doctors
+from app.views import services, service_detail, book_appointment
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('', views.index, name='index' ),
-    path('services', views.services, name='services'),
+    path('services/', services, name='services'),
     path('services/<int:service_id>/', service_detail, name='service_detail'),
+    path('book_appointment/', book_appointment, name='book_appointment'),
     path('doctors', views.doctors, name='doctors'),
     path('doctors/<int:doctor_id>/', views.doctor_detail, name='doctor_detail'),
     path('about', views.about, name='about'),
