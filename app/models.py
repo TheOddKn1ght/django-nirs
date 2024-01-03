@@ -8,7 +8,7 @@ class Doctor(models.Model):
     last_name = models.CharField(max_length=50, default='Unknown')
     department = models.CharField(max_length=255)
     time = models.DateTimeField()
-    photo = models.ImageField(upload_to='doctor_photos/', blank=True, null=True)
+    photo = models.ImageField(upload_to='static/img/doctor_profile_pic', blank=True, null=True)
 
     def get_full_name(self):
         full_name = f"{self.first_name} {self.second_name + ' ' if self.second_name else ''}{self.last_name}"
