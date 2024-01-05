@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 class Doctor(models.Model):
     id = models.AutoField(primary_key=True)
@@ -37,6 +39,21 @@ class Patient(models.Model):
     email = models.EmailField()
     doctor_id = models.IntegerField()
     medical_history = models.TextField()
+
+    @receiver(post_save, sender=User)
+    def create_patient(sender, instance, created, **kwargs):
+        if created and not instance.is_staff:
+            Patient.objects.create(
+                first_name=instance.first_name,
+                second_name=instance.second_name,
+                last_name=instance.last_name,
+                phone='',  # Add appropriate default value
+                email=instance.email,
+                doctor_id=0,  # Add appropriate default value
+                medical_history='',  # Add appropriate default value
+            )
+
+    post_save.connect(create_patient, sender=User)
 
 class ProcedureLog(models.Model):
     id = models.AutoField(primary_key=True)
