@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import MedicalStaff, Procedure, Doctor
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout
 
 
 # Create your views here.
@@ -44,3 +46,25 @@ def book_appointment(request):
     # If the request method is not POST, you may want to handle it differently
     # For example, redirect to the service detail page or show an error message
     return render(request, 'index.html')
+
+def registration_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('index')  # Redirect to the desired page after registration
+    else:
+        form = UserCreationForm()
+    return render(request, 'register.html', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('index')  # Redirect to the desired page after login
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})

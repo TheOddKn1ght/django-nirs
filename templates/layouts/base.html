@@ -20,6 +20,17 @@
         <a href="{% url 'doctors' %}" class="text-white">Врачи</a> |
         <a href="{% url 'about' %}" class="text-white">О нас</a> |
         <a href="{% url 'contacts' %}" class="text-white">Контакты</a>
+
+        <div class="text-right">
+            {% if user.is_authenticated %}
+                <span class="text-light mr-3">Привет, {{ user.username }}!</span>
+                <a href="" class="btn btn-outline-light">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-outline-light mr-2">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-outline-light">Register</a>
+            {% endif %}
+        </div>
+
     </nav>
 
     <section class="container my-4">
